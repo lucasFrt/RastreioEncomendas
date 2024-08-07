@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, Text, Image, Pressable } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert, Text, Image, Pressable, Platform } from 'react-native';
 import { supabase } from './supabase';
 import { Link, useRouter } from 'expo-router';
+
+const showAlert = (title, message) => {
+  if (Platform.OS === 'web') {
+    window.alert(`${title}\n\n${message}`);
+  } else {
+    Alert.alert(title, message);
+  }
+};
 
 const RegisterForm = () => {
   const [user, setUser] = useState('');
@@ -21,15 +29,15 @@ const RegisterForm = () => {
 
   const handleRegister = async () => {
     if (!user || !email || !password) {
-      Alert.alert('Error', 'Preencha todos os campos.');
+      showAlert('Error', 'Preencha todos os campos.');
       return;
     }
     if (!validateEmail(email)) {
-      Alert.alert('Error', 'Insira um email valido');
+      showAlert('Error', 'Insira um email valido');
       return;
     }
     if (!validatePassword(password)) {
-      Alert.alert('Error', 'A senha deve ter mais de 8 caracteres, ao menos um caracter maiusculo e ao menos 1 numero.');
+      showAlert('Error', 'A senha deve ter mais de 8 caracteres, ao menos um caracter maiusculo e ao menos 1 numero.');
       return;
     }
 
@@ -38,10 +46,10 @@ const RegisterForm = () => {
       .insert([{ user, email, password }]);
 
     if (error) {
-      Alert.alert('Error', 'Registro Falhou');
+      showAlert('Error', 'Registro Falhou');
       console.error(error);
     } else {
-      Alert.alert('Registro concluido!', `Bem vindo ${user}`);
+      showAlert('Registro concluido!', `Bem vindo ${user}`);
       setUser('');
       setEmail('');
       setPassword('');
@@ -49,8 +57,6 @@ const RegisterForm = () => {
     }
   };
 
-
- 
   return (
     <View style={styles.container}>
       <View style={styles.navBar}>
@@ -89,7 +95,6 @@ const RegisterForm = () => {
             <Text style={styles.textbtn}>Register</Text>
           </View>
         </Pressable>
-        
 
         <Text style={{marginTop: '5%'}}>Já tem conta?</Text>
         
