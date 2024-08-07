@@ -39,7 +39,7 @@ const App = () => {
 
   const handleFetch = () => {
     setLoading(true);
-    axios.get(`https://api.linketrack.com/track/json?user=lucasmigfrota16@gmail.com&token=bf4f45cab13a15858dd2d88d663e06b71433b6fc3be2ee76e464ea56db922e68&codigo=${codigo}`)
+    axios.get(`https://api.linketrack.com/track/json?user={{{{aqui vai seu token}}}}&codigo=${codigo}`)
       .then((response) => {
         const novoRastreamento = {
           codigo: codigo,
